@@ -40,7 +40,7 @@ def scroll_manual_ate_achar(driver, texto_alvo, max_tentativas=10):
     return None
 
 def test_resume_video(driver):
-    titulo = "Uma Batalha após a Outra"
+    titulo = "Doutor Sono"
     
     home = HomePage(driver)
     search = SearchPage(driver)
