@@ -31,6 +31,14 @@ O foco deste projeto foi o desenvolvimento e automação de casos de testes para
 
 ---
 
+##  Demo da Execução
+
+Você pode ver um exemplo completo de todos os testes rodando no link abaixo:
+
+ **[Assistir Vídeo da Execução dos Testes](https://drive.google.com/file/d/1sH4c8zZWYfibKu6t96PEjZvYuuoR4FF6/view?usp=sharing)**
+
+---
+
 ##  Desafios e Dificuldades Gerais
 
 Durante o desenvolvimento da automação, foram encontrados diversos desafios técnicos e comportamentais da aplicação:
