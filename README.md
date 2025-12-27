@@ -64,7 +64,7 @@ Mobile_Tests/
 
 3.  Install dependencies:
     ```bash
-    pip install pytest pytest-html Appium-Python-Client selenium
+    pip install -r requirements.txt
     ```
 
 ## 🏃‍♂️ Running Tests
