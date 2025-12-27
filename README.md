@@ -1,24 +1,57 @@
-# HBO Max Mobile Automation
+# Automação Mobile HBO Max (Android)
 
-This project contains automated E2E tests for the HBO Max Android application using **Appium**, **Python**, and **Pytest**. The project is structured using the **Page Object Model (POM)** pattern for better maintainability and scalability.
+Este projeto contém testes automatizados E2E (Ponta a Ponta) para o aplicativo Android da HBO Max (agora Max) utilizando **Appium**, **Python** e **Pytest**. O projeto está estruturado usando o padrão **Page Object Model (POM)** para melhor manutenibilidade e escalabilidade.
 
-## 🚀 Features
+##  Funcionalidades Automatizadas
 
-- **Page Object Model (POM)** architecture.
-- **Pytest** framework for test execution and fixtures.
-- **HTML Reporting** with `pytest-html`.
-- **Automatic Screenshots** on test failure embedded in the report.
-- **Centralized Configuration** via `conftest.py`.
+O foco deste projeto foi o desenvolvimento e automação de casos de testes para funcionalidades críticas do aplicativo. Abaixo estão os cenários detalhados.
 
-## 🛠️ Technologies
+###  Funcionalidade 1: Player de Vídeo (Controle de Reprodução)
+
+| ID | Título do Caso | Pré-condições | Passos para execução | Resultado Esperado | Status |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **CT-01** | **Retomada de Conteúdo** | Usuário logado e na página de um título (ex: Shrek). | 1. Clicar em “Assistir” e assistir por 60s.<br>2. Fechar o app totalmente.<br>3. Reabrir e rolar até “Continuar Assistindo”.<br>4. Clicar no título na lista. | O vídeo deve iniciar exatamente onde parou (60 seg), sem reiniciar do zero. | ✅ **Automatizado** |
+| **CT-02** | **Alteração de Áudio** | Usuário deu play em algum título. | 1. Com vídeo rodando, abrir menu de áudio.<br>2. Trocar idioma (Inglês -> Português). | O áudio deve ser alterado de forma rápida sem travar o vídeo. | ⚠️ **Manual** |
+
+> **Nota sobre o CT-02:** Este caso de teste não foi automatizado devido à complexidade técnica de validar a mudança efetiva da faixa de áudio (análise de som) via Appium em um ambiente de emulação.
+
+###  Funcionalidade 2: Minha Lista
+
+| ID | Título do Caso | Pré-condições | Passos para execução | Resultado Esperado | Status |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **CT-03** | **Adicionar título à Lista** | Usuário logado. | 1. Clicar na busca (Menu Inferior).<br>2. Abrir menu (três pontos) no banner.<br>3. Clicar em "+" (Add à lista).<br>4. Ir para Home > Minha Lista. | O ícone deve mudar de estado (check) e o filme deve aparecer visível na lista. | ✅ **Automatizado** |
+| **CT-04** | **Remover título da Lista** | Filme já adicionado. | 1. Acessar "Minha Lista".<br>2. Clicar no menu do título.<br>3. Clicar em remover. | O item deve sumir da lista imediatamente e o sistema deve confirmar a remoção. | ✅ **Automatizado** |
+
+###  Funcionalidade 3: Busca por Títulos
+
+| ID | Título do Caso | Pré-condições | Passos para execução | Resultado Esperado | Status |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **CT-05** | **Busca por Título Existente** | Usuário logado. | 1. Clicar na lupa (Menu Inferior).<br>2. Buscar título existente (ex: "Smiling Friends"). | O título correto deve ser exibido nos resultados da busca. | ✅ **Automatizado** |
+| **CT-06** | **Busca por Título Inexistente** | Usuário logado. | 1. Clicar na lupa (Menu Inferior).<br>2. Buscar termo inexistente (ex: "boucha"). | Não deve aparecer nenhum título e exibir a mensagem: *"Parece que não temos esse conteúdo..."* | ✅ **Automatizado** |
+
+---
+
+##  Desafios e Dificuldades Gerais
+
+Durante o desenvolvimento da automação, foram encontrados diversos desafios técnicos e comportamentais da aplicação:
+
+1.  **IDs Dinâmicos e Controladores:** Os IDs de acessibilidade e localizadores dos botões (como titulo do banner) mudam dependendo do título selecionado (ex: *"Assistir Shrek"* vs *"Assistir Batman"*), exigindo estratégias de locators dinâmicos (XPath).
+2.  **Player de Vídeo Nativo:** A interação com a barra do player (Pause/Play) e os controles que somem automaticamente da tela exigiu o uso de coordenadas e comandos de toque específicos para manter a interface ativa.
+3.  **Pop-ups Intermitentes:** O aparecimento aleatório de pop-ups (avaliação do app, novidades, etc.) durante a execução dos testes pode interferir no fluxo.
+4.  **Login Abstraído:** Devido a mecanismos de segurança (como CAPTCHA e bloqueios de automação na tela de login), optou-se por realizar os testes com o **usuário já logado**, abstraindo a etapa de autenticação.
+5.  **Inconsistência na Busca:** Alguns títulos aparecem em ordens diferentes nos resultados da busca dependendo do momento, exigindo validações mais flexíveis.
+6.  **Rebranding (Max vs HBO Max):** A recente mudança da marca e do aplicativo dificultou a busca por documentação e soluções de problemas na internet, pois muito conteúdo ainda se refere à versão antiga do app.
+
+---
+
+##  Tecnologias
 
 - [Python 3.x](https://www.python.org/)
 - [Appium](https://appium.io/)
 - [Pytest](https://docs.pytest.org/)
 - [Selenium](https://www.selenium.dev/)
 
-## 📂 Project Structure
-
+##  Estrutura do Projeto
 ```
 Mobile_Tests/
 ├── pages/                  # Page Objects (Locators & Methods)
@@ -37,23 +70,23 @@ Mobile_Tests/
 └── README.md               # Project Documentation
 ```
 
-## ⚙️ Prerequisites
+##  Pré-requisitos
 
-1.  **Python 3.x** installed.
-2.  **Appium Server** installed and running (default: `http://127.0.0.1:4723`).
-3.  **Android SDK** configured.
-4.  **Android Emulator/Device** connected.
-5.  **HBO Max App** (`com.wbd.stream`) installed on the device.
+1.  **Python 3.x** instalado.
+2.  **Servidor Appium** instalado e rodando (padrão: `http://127.0.0.1:4723`).
+3.  **Android SDK** configurado.
+4.  **Emulador Android/Dispositivo** conectado.
+5.  **App HBO Max** (`com.wbd.stream`) instalado no dispositivo.
 
-## 📦 Installation
+##  Instalação
 
-1.  Clone the repository:
+1.  Clone o repositório:
     ```bash
-    git clone https://github.com/dougsfelipe/HBOMAX_Automation.git
+    git clone [https://github.com/dougsfelipe/HBOMAX_Automation.git](https://github.com/dougsfelipe/HBOMAX_Automation.git)
     cd HBOMAX_Automation
     ```
 
-2.  Create and activate a virtual environment (optional but recommended):
+2.  Crie e ative um ambiente virtual (opcional, mas recomendado):
     ```bash
     python -m venv .venv
     # Windows:
@@ -62,25 +95,25 @@ Mobile_Tests/
     source .venv/bin/activate
     ```
 
-3.  Install dependencies:
+3.  Instale as dependências via requirements:
     ```bash
     pip install -r requirements.txt
     ```
 
-## 🏃‍♂️ Running Tests
+## Executando os Testes
 
-### Run all tests
 ```bash
 pytest -v
-```
+  ```
 
-### Run with HTML Report
-Generates a `report.html` file in the root directory.
+## Rodar com Relatório HTML
+
+Gera um arquivo report.html no diretório raiz.
 ```bash
 pytest -v --html=report.html --self-contained-html
 ```
 
-### Run specific test file
+### Rodar caso de teste específico
 ```bash
 pytest tests/test_playback_resume.py
 ```
@@ -90,7 +123,7 @@ pytest tests/test_playback_resume.py
 pytest tests/test_search.py::test_search_existing_title
 ```
 
-## 📊 Reporting & Debugging
+## Relatórios e Debug
 
-- **HTML Report**: After running with the `--html` flag, open `report.html` in your browser to view detailed results.
-- **Screenshots**: If a test fails, a screenshot is automatically taken and saved in the `screenshots/` directory. It is also embedded directly into the HTML report.
+- **HTML Report**: Após rodar com a flag --html, abra o arquivo report.html no seu navegador para ver os resultados detalhados.
+- **Screenshots**: Se um teste falhar, um screenshot é tirado automaticamente e salvo no diretório screenshots/. Ele também é incorporado diretamente no relatório HTML.
